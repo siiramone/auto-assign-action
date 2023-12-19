@@ -45,7 +45,9 @@ export class PullRequest {
     if (!this.context.payload.pull_request) {
       return reviewers
     }
-    const { requested_reviewers: requestedReviewers = [] } = this.context.payload.pull_request
-    return reviewers.filter((reviewer) => !requestedReviewers.includes(reviewer))
+    const { requested_reviewers: requestedReviewers = [] } =
+      this.context.payload.pull_request
+    const logins = requestedReviewers.map((reviewer) => reviewer.login)
+    return reviewers.filter((reviewer) => !logins.includes(reviewer))
   }
 }
