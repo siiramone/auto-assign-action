@@ -40,4 +40,12 @@ export class PullRequest {
     const { labels: pullRequestLabels = [] } = this.context.payload.pull_request
     return pullRequestLabels.some((label) => labels.includes(label.name))
   }
+
+  removeAlreadyAssignedReviewer(reviewers: string[]): string[] {
+    if (!this.context.payload.pull_request) {
+      return reviewers
+    }
+    const { requested_reviewers: requestedReviewers = [] } = this.context.payload.pull_request
+    return reviewers.filter((reviewer) => !requestedReviewers.includes(reviewer))
+  }
 }
