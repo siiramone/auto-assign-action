@@ -42,12 +42,14 @@ export class PullRequest {
   }
 
   removeAlreadyAssignedReviewer(reviewers: string[]): string[] {
+    core.info(`reviewers = ${reviewers}`)
     if (!this.context.payload.pull_request) {
       return reviewers
     }
     const { requested_reviewers: requestedReviewers = [] } =
       this.context.payload.pull_request
     const logins = requestedReviewers.map((reviewer) => reviewer.login)
+    core.info(`logins = ${logins}`)
     return reviewers.filter((reviewer) => !logins.includes(reviewer))
   }
 }
